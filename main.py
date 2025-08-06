@@ -89,7 +89,12 @@ def update_username(data: UpdateUsername,authorization:str = Header(None)):
         detail="invalid token",
         headers={"WWW-Authentication": "bearer"}
     )
-
-
-
-
+@app.get("/select")
+def select_users():
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM users")
+    users = cursor.fetchall()
+    cursor.close()
+    db.close()
+    return {"user": users}
